@@ -310,7 +310,7 @@
     <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form id="eventForm" method="POST" action="{{ secure_url(route('calendar.store')) }}">
+                <form id="eventForm" method="POST" action="https://calendev.onrender.com/calendar/store">
                     @csrf
                     <input type="hidden" name="id" id="eventId">
                     <div class="modal-header">
@@ -472,7 +472,7 @@
                     };
 
                     // Send AJAX request to update
-                    fetch("{{ secure_url(route('calendar.dragUpdate')) }}", {
+                    fetch("https://calendev.onrender.com/calendar/drag-update", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -506,7 +506,7 @@
                     document.getElementById('start_date').value = formatted;
                     document.getElementById('end_date').value = formatted;
 
-                    document.getElementById('eventForm').action = "{{ route('calendar.store') }}";
+                    document.getElementById('eventForm').action = "https://calendev.onrender.com/calendar/store";
 
                     new bootstrap.Modal(document.getElementById('eventModal')).show();
                 },
@@ -530,7 +530,7 @@
 
                     document.getElementById('deleteEventId').value = event.id;
 
-                    document.getElementById('eventForm').action = "{{ secure_url(route('calendar.update')) }}";
+                    document.getElementById('eventForm').action = "https://calendev.onrender.com/calendar/update";
 
                     new bootstrap.Modal(document.getElementById('eventModal')).show();
                 }, customButtons: {
@@ -573,7 +573,7 @@
 
 
         function clearForm() {
-            document.getElementById('eventForm').action = "{{ secure_url(route('calendar.store')) }}";
+            document.getElementById('eventForm').action = "https://calendev.onrender.com/calendar/store";
             document.getElementById('eventForm').reset();
             $('#description').summernote('code', '');
             document.getElementById('eventId').value = '';
