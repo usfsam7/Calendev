@@ -561,7 +561,7 @@
                         btn.innerHTML = '<i class="bi bi-camera"></i>';
                         btn.dataset.iconSet = 'true';
                     }
-                    btn.style.display = info.view.type.startsWith('list') ? 'inline-flex' : 'none';
+                    // btn.style.display = info.view.type.startsWith('list') ? 'inline-flex' : 'none';
                 }
             });
             calendar.render();
