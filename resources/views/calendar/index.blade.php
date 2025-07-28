@@ -463,8 +463,9 @@
                     // Prepare data for backend
                     const data = {
                         id: event.id,
-                        title: event.title,
+                        title:event.title,
                         description: event.description,
+                        reminder_time: event.extendedProps.reminder_time,
                         start_date: formatForDatetimeLocal(event.start),
                         end_date: formatForDatetimeLocal(new Date(event.end)),
                         _token: "{{ csrf_token() }}" // Laravel CSRF token
@@ -475,7 +476,8 @@
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
-                            "Accept": "application/json"
+                            "Accept": "application/json",
+                            "X-Requested-With": "XMLHttpRequest"
                         },
                         body: JSON.stringify(data)
                     })
@@ -484,7 +486,7 @@
                             if (response.success) {
                                 showFlashMessage("Event Updated Successfully");
                             } else {
-                                showFlashMessage("Event Update failed");
+                                showFlashMessage('Event Update Failed, Something went wrong');
                                 info.revert(); // undo move
                             }
                         })
@@ -669,15 +671,6 @@
     <footer class="footer mt-5 py-4 bg-light">
         <div class="container text-center">
             <div class="social-links mb-3">
-                <!-- GitHub -->
-                <a href="https://github.com/usfsam7" target="_blank" class="mx-2 text-dark">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor"
-                        class="bi bi-github" viewBox="0 0 16 16">
-                        <path
-                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" />
-                    </svg>
-                </a>
-
                 <!-- LinkedIn -->
                 <a href="https://www.linkedin.com/in/sw-usf/" target="_blank" class="mx-2 text-dark">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"

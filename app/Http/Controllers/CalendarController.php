@@ -56,19 +56,18 @@ class CalendarController extends Controller
         try {
             $validated = $request->validate([
             'id' => 'required|exists:events,id',
-            'title' => 'required|string',
-            'description' => 'nullable|string',
+            // 'title' => 'required|string',
+            // 'description' => 'nullable|string',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date',
-            'reminder_time' => 'required|integer|min:0'
+            // 'reminder_time' => 'required|integer|min:0'
         ]);
-
 
              Event::findOrFail($request->id)->update($validated);
 
             return response()->json([
                 'success' => true,
-                'message' => `Event updated successfully`
+                'message' => 'Event updated successfully'
             ]);
         } catch (\Exception $e) {
             return response()->json([
