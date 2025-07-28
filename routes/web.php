@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CalendarController;
 
 
-Route::get('/', function () {
+Route::get('https://calendev.onrender.com/', function () {
     return redirect()->route('calendar');
 });
 
