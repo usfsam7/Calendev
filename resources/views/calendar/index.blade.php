@@ -334,8 +334,8 @@
     <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <!-- <form id="eventForm" method="POST" action="https://calendev.onrender.com/calendar/store"> -->
-                <form id="eventForm" method="POST" action="{{ route('calendar.store') }}"></form>
+                <form id="eventForm" method="POST" action="https://calendev.onrender.com/calendar/store">
+                <!-- <form id="eventForm" method="POST" action="{{ route('calendar.store') }}"></form> -->
                 @csrf
                 <input type="hidden" name="id" id="eventId">
                 <div class="modal-header">
@@ -495,7 +495,7 @@
                     };
 
                     // Send AJAX request to update
-                    fetch("{{ route('calendar.dragUpdate') }}", {
+                    fetch("https://calendev.onrender.com/calendar/drag-update", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -529,9 +529,9 @@
                     document.getElementById('start_date').value = formatted;
                     document.getElementById('end_date').value = formatted;
 
-                    // document.getElementById('eventForm').action = "https://calendev.onrender.com/calendar/store";
+                    document.getElementById('eventForm').action = "https://calendev.onrender.com/calendar/store";
 
-                    document.getElementById('eventForm').action = "{{ route('calendar.store') }}";
+                   //document.getElementById('eventForm').action = "{{ route('calendar.store') }}";
 
                     new bootstrap.Modal(document.getElementById('eventModal')).show();
                 },
@@ -555,9 +555,9 @@
 
                     document.getElementById('deleteEventId').value = event.id;
 
-                    // document.getElementById('eventForm').action = "https://calendev.onrender.com/calendar/update";
+                    document.getElementById('eventForm').action = "https://calendev.onrender.com/calendar/update";
 
-                    document.getElementById('eventForm').action = "{{route('calendar.update')}}";
+                    // document.getElementById('eventForm').action = "{{route('calendar.update')}}";
 
                     new bootstrap.Modal(document.getElementById('eventModal')).show();
                 }, customButtons: {
@@ -600,8 +600,8 @@
 
 
         function clearForm() {
-            // document.getElementById('eventForm').action = "https://calendev.onrender.com/calendar/store";
-            document.getElementById('eventForm').action = "{{ route('calendar.store') }}";
+            document.getElementById('eventForm').action = "https://calendev.onrender.com/calendar/store";
+            // document.getElementById('eventForm').action = "{{ route('calendar.store') }}";
             document.getElementById('eventForm').reset();
             $('#description').summernote('code', '');
             document.getElementById('eventId').value = '';
@@ -615,8 +615,8 @@
 
             if (confirm('Are you sure you want to delete this event?')) {
                 const deleteForm = document.getElementById('deleteForm');
-                // deleteForm.action = `https://calendev.onrender.com/calendar/delete/${id}`;
-                deleteForm.action = `/v1/calendar/delete/${id}`;
+                deleteForm.action = `https://calendev.onrender.com/calendar/delete/${id}`;
+                // deleteForm.action = `/v1/calendar/delete/${id}`;
 
                 deleteForm.submit();
             }
