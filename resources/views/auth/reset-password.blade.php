@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('password.store') }}">
+    <form method="POST" action="https://calendev.onrender.com/reset-password">
         @csrf
 
         <!-- Password Reset Token -->
