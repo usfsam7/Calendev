@@ -262,39 +262,7 @@
                 display: none !important;
             }
 
-            /* Repeating options styling */
-            #repeat_options {
-                background-color: #f8f9fa;
-                border: 1px solid #dee2e6;
-                border-radius: 8px;
-                padding: 15px;
-                margin-top: 10px;
-            }
 
-            .dark-mode #repeat_options {
-                background-color: #2c2c2c;
-                border-color: #444;
-            }
-
-            #repeat_interval_text {
-                margin-left: 10px;
-                color: #6c757d;
-                font-weight: 500;
-            }
-
-            .dark-mode #repeat_interval_text {
-                color: #adb5bd;
-            }
-
-            .form-group {
-                margin-bottom: 15px;
-            }
-
-            .form-group label {
-                font-weight: 500;
-                margin-bottom: 5px;
-                display: block;
-            }
         </style>
 
     </head>
@@ -407,41 +375,6 @@
                             </select>
                         </div>
 
-                        <div class="form-group">
-                            <label for="repeat_type">Repeat:</label>
-                            <select id="repeat_type" name="repeat_type" class="form-control" onchange="toggleRepeatOptions()">
-                                <option value="none">No Repeat</option>
-                                <option value="daily">Daily</option>
-                                <option value="weekly">Weekly</option>
-                                <option value="monthly">Monthly</option>
-                                <option value="yearly">Yearly</option>
-                            </select>
-                        </div>
-
-                        <div id="repeat_options" style="display: none;">
-                            <div class="form-group">
-                                <label for="repeat_interval">Repeat Every:</label>
-                                <select id="repeat_interval" name="repeat_interval" class="form-control">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10</option>
-                                </select>
-                                <span id="repeat_interval_text">days</span>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="repeat_until">Repeat Until:</label>
-                                <input type="date" id="repeat_until" name="repeat_until" class="form-control">
-                            </div>
-                        </div>
-
 
                         <div class="mb-3">
                             <label for="start_date" class="form-label">Start Date</label>
@@ -486,10 +419,6 @@
             'start' => $event->start_date,
             'end' => $event->end_date,
             'reminder_time' => $event->reminder_time,
-            'repeat_type' => $event->repeat_type,
-            'repeat_interval' => $event->repeat_interval,
-            'repeat_until' => $event->repeat_until,
-            'parent_event_id' => $event->parent_event_id,
         ];
     });
         @endphp
@@ -531,10 +460,6 @@
                         start: e.start,
                         end: e.end,
                         reminder_time: e.reminder_time,
-                        repeat_type: e.repeat_type,
-                        repeat_interval: e.repeat_interval,
-                        repeat_until: e.repeat_until,
-                        parent_event_id: e.parent_event_id,
                     })),   // ============= NOTIFICATION SYSTEM =============
                     eventDidMount: function (info) {
                         const event = info.event;
@@ -629,14 +554,6 @@
                         document.getElementById('end_date').value = formatForDatetimeLocal(new Date(event.end));
                         document.getElementById('reminder_time').value = event.extendedProps.reminder_time || '0';
 
-                        // Handle repeating fields
-                        document.getElementById('repeat_type').value = event.extendedProps.repeat_type || 'none';
-                        document.getElementById('repeat_interval').value = event.extendedProps.repeat_interval || '1';
-                        if (event.extendedProps.repeat_until) {
-                            document.getElementById('repeat_until').value = event.extendedProps.repeat_until;
-                        }
-                        toggleRepeatOptions(); // Show/hide repeat options based on selection
-
                         document.getElementById('deleteEventId').value = event.id;
 
                         document.getElementById('eventForm').action = "https://calendev.onrender.com/calendar/update";
@@ -690,35 +607,6 @@
                 $('#description').summernote('code', '');
                 document.getElementById('eventId').value = '';
                 document.getElementById('deleteEventId').value = '';
-                document.getElementById('repeat_options').style.display = 'none';
-            }
-
-            function toggleRepeatOptions() {
-                const repeatType = document.getElementById('repeat_type').value;
-                const repeatOptions = document.getElementById('repeat_options');
-                const repeatIntervalText = document.getElementById('repeat_interval_text');
-
-                if (repeatType === 'none') {
-                    repeatOptions.style.display = 'none';
-                } else {
-                    repeatOptions.style.display = 'block';
-
-                    // Update the interval text based on repeat type
-                    switch (repeatType) {
-                        case 'daily':
-                            repeatIntervalText.textContent = 'day(s)';
-                            break;
-                        case 'weekly':
-                            repeatIntervalText.textContent = 'week(s)';
-                            break;
-                        case 'monthly':
-                            repeatIntervalText.textContent = 'month(s)';
-                            break;
-                        case 'yearly':
-                            repeatIntervalText.textContent = 'year(s)';
-                            break;
-                    }
-                }
             }
 
             function submitDelete() {
