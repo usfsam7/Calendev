@@ -409,16 +409,16 @@
         <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 
         @php
-        $formattedEvents = $events->map(function ($event) {
-            return [
-                'id' => (string) $event->id,
-                'title' => $event->title,
-                'description' => $event->description,
-                'start' => $event->start_date,
-                'end' => $event->end_date,
-                'reminder_time' => $event->reminder_time,
-            ];
-        });
+    $formattedEvents = $events->map(function ($event) {
+        return [
+            'id' => (string) $event->id,
+            'title' => $event->title,
+            'description' => $event->description,
+            'start' => $event->start_date,
+            'end' => $event->end_date,
+            'reminder_time' => $event->reminder_time,
+        ];
+    });
         @endphp
 
         <script>
@@ -615,7 +615,7 @@
 
                 if (confirm('Are you sure you want to delete this event?')) {
                     const deleteForm = document.getElementById('deleteForm');
-                    deleteForm.action = `{{ route('calendar.delete', '') }}/${id}`;
+                    deleteForm.action = `{{ route('calendar.delete', '') }}?id=${id}`;
 
 
                     deleteForm.submit();
