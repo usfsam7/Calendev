@@ -13,6 +13,8 @@ services:
         generateValue: true
       - key: APP_DEBUG
         value: false
+      - key: APP_URL
+        value: https://calendev.onrender.com
       - key: LOG_CHANNEL
         value: stderr
       - key: DB_CONNECTION
