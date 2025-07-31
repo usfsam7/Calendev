@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Event;
-use Carbon\Carbon;
+
 class CalendarController extends Controller
 {
     public function index()
@@ -28,10 +28,17 @@ class CalendarController extends Controller
             'repeat_until' => 'nullable|date|after:start_date'
         ]);
 
+        // Set default values for non-repeating events
+        if (empty($validated['repeat_type']) || $validated['repeat_type'] === 'none') {
+            $validated['repeat_type'] = 'none';
+            $validated['repeat_interval'] = 1;
+            $validated['repeat_until'] = null;
+        }
+
         $event = Event::create($validated);
 
-        // If this is a repeating event, create the recurring instances
-        if (isset($validated['repeat_type']) && $validated['repeat_type'] && $validated['repeat_type'] !== 'none' && isset($validated['repeat_until']) && $validated['repeat_until']) {
+        // Only create recurring instances if this is actually a repeating event
+        if ($validated['repeat_type'] !== 'none' && !empty($validated['repeat_until'])) {
             $this->createRecurringEvents($event);
         }
 
@@ -110,29 +117,30 @@ class CalendarController extends Controller
 
    private function createRecurringEvents($parentEvent)
    {
-       $startDate = Carbon::parse($parentEvent->start_date);
-       $endDate = Carbon::parse($parentEvent->end_date);
-       $repeatUntil = Carbon::parse($parentEvent->repeat_until);
-       $duration = $startDate->diffInSeconds($endDate);
+       $startDate = new \DateTime($parentEvent->start_date);
+       $endDate = new \DateTime($parentEvent->end_date);
+       $repeatUntil = new \DateTime($parentEvent->repeat_until);
+       $duration = $endDate->getTimestamp() - $startDate->getTimestamp();
 
-       $currentDate = $startDate->copy();
+       $currentDate = clone $startDate;
        $interval = (int) $parentEvent->repeat_interval;
 
        while ($currentDate <= $repeatUntil) {
            // Skip the original event date
-           if ($currentDate->eq($startDate)) {
+           if ($currentDate == $startDate) {
                $currentDate = $this->getNextDate($currentDate, $parentEvent->repeat_type, $interval);
                continue;
            }
 
-           $newStartDate = $currentDate;
-           $newEndDate = $currentDate->copy()->addSeconds($duration);
+           $newStartDate = clone $currentDate;
+           $newEndDate = clone $currentDate;
+           $newEndDate->add(new \DateInterval('PT' . $duration . 'S'));
 
            Event::create([
                'title' => $parentEvent->title,
                'description' => $parentEvent->description,
-               'start_date' => $newStartDate,
-               'end_date' => $newEndDate,
+               'start_date' => $newStartDate->format('Y-m-d H:i:s'),
+               'end_date' => $newEndDate->format('Y-m-d H:i:s'),
                'reminder_time' => $parentEvent->reminder_time,
                'repeat_type' => 'none', // Individual instances don't repeat
                'repeat_interval' => 1,
@@ -146,20 +154,24 @@ class CalendarController extends Controller
 
    private function getNextDate($date, $repeatType, $interval)
    {
-       // Cast interval to integer to ensure Carbon methods work correctly
        $interval = (int) $interval;
+       $newDate = clone $date;
 
        switch ($repeatType) {
            case 'daily':
-               return $date->addDays($interval);
+               $newDate->add(new \DateInterval('P' . $interval . 'D'));
+               break;
            case 'weekly':
-               return $date->addWeeks($interval);
+               $newDate->add(new \DateInterval('P' . ($interval * 7) . 'D'));
+               break;
            case 'monthly':
-               return $date->addMonths($interval);
+               $newDate->add(new \DateInterval('P' . $interval . 'M'));
+               break;
            case 'yearly':
-               return $date->addYears($interval);
-           default:
-               return $date;
+               $newDate->add(new \DateInterval('P' . $interval . 'Y'));
+               break;
        }
+
+       return $newDate;
    }
 }
