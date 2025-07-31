@@ -24,7 +24,7 @@ class CalendarController extends Controller
             'end_date' => 'nullable|date',
             'reminder_time' => 'required|integer|min:0',
             'repeat_type' => 'nullable|in:none,daily,weekly,monthly,yearly',
-            'repeat_interval' => 'nullable|integer|min:1',
+            'repeat_interval' => 'nullable|integer|min:1|max:365',
             'repeat_until' => 'nullable|date|after:start_date'
         ]);
 
@@ -48,7 +48,7 @@ class CalendarController extends Controller
             'end_date' => 'nullable|date',
             'reminder_time' => 'required|integer|min:0',
             'repeat_type' => 'nullable|in:none,daily,weekly,monthly,yearly',
-            'repeat_interval' => 'nullable|integer|min:1',
+            'repeat_interval' => 'nullable|integer|min:1|max:365',
             'repeat_until' => 'nullable|date|after:start_date'
         ]);
 
@@ -116,7 +116,7 @@ class CalendarController extends Controller
        $duration = $startDate->diffInSeconds($endDate);
 
        $currentDate = $startDate->copy();
-       $interval = $parentEvent->repeat_interval;
+       $interval = (int) $parentEvent->repeat_interval;
 
        while ($currentDate <= $repeatUntil) {
            // Skip the original event date
@@ -146,6 +146,9 @@ class CalendarController extends Controller
 
    private function getNextDate($date, $repeatType, $interval)
    {
+       // Cast interval to integer to ensure Carbon methods work correctly
+       $interval = (int) $interval;
+
        switch ($repeatType) {
            case 'daily':
                return $date->addDays($interval);
