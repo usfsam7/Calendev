@@ -616,7 +616,7 @@
                 if (confirm('Are you sure you want to delete this event?')) {
                     const deleteForm = document.getElementById('deleteForm');
                     // deleteForm.action = `https://calendev.onrender.com/calendar/delete/${id}`;
-                    deleteForm.action = `{{ route('calendar.delete', $event->id) }}`;
+                    deleteForm.action = `{{ route('calendar.delete', $id) }}`;
 
                     deleteForm.submit();
                 }
