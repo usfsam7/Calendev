@@ -300,13 +300,13 @@
                     </svg>
                 </button>
 
-                <a href="{{ route('profile.edit') }}"><svg xmlns="http://www.w3.org/2000/svg" width="27" height="27"
+                <a href="https://calendev.onrender.com/edit-profile"><svg xmlns="http://www.w3.org/2000/svg" width="27" height="27"
                         fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                         <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
                         <path fill-rule="evenodd"
                             d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
                     </svg></a>
-                <form method="POST" action="{{ route('logout') }}">
+                <form method="POST" action="https://calendev.onrender.com/logout">
                     @csrf
                     <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" href="route('logout')"
                         onclick="event.preventDefault(); this.closest('form').submit();">
@@ -334,8 +334,8 @@
         <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <!-- <form id="eventForm" method="POST" action="https://calendev.onrender.com/calendar/store"> -->
-                    <form id="eventForm" method="POST" action="{{ route('calendar.store') }}"></form>
+                    <form id="eventForm" method="POST" action="https://calendev.onrender.com/calendar/store">
+
                     @csrf
                     <input type="hidden" name="id" id="eventId">
                     <div class="modal-header">
@@ -495,7 +495,7 @@
                         };
 
                         // Send AJAX request to update
-                        fetch("{{route('calendar.dragUpdate')}}", {
+                        fetch("https://calendev.onrender.com/calendar/drag-update", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json",
@@ -529,9 +529,9 @@
                         document.getElementById('start_date').value = formatted;
                         document.getElementById('end_date').value = formatted;
 
-                        // document.getElementById('eventForm').action = "https://calendev.onrender.com/calendar/store";
+                        document.getElementById('eventForm').action = "https://calendev.onrender.com/calendar/store";
 
-                       document.getElementById('eventForm').action = "{{ route('calendar.store') }}";
+
 
                         new bootstrap.Modal(document.getElementById('eventModal')).show();
                     },
@@ -555,9 +555,9 @@
 
                         document.getElementById('deleteEventId').value = event.id;
 
-                        // document.getElementById('eventForm').action = "https://calendev.onrender.com/calendar/update";
+                        document.getElementById('eventForm').action = "https://calendev.onrender.com/calendar/update";
 
-                        document.getElementById('eventForm').action = "{{route('calendar.update')}}";
+
 
                         new bootstrap.Modal(document.getElementById('eventModal')).show();
                     }, customButtons: {
@@ -600,8 +600,8 @@
 
 
             function clearForm() {
-                // document.getElementById('eventForm').action = "https://calendev.onrender.com/calendar/store";
-                document.getElementById('eventForm').action = "{{ route('calendar.store') }}";
+                document.getElementById('eventForm').action = "https://calendev.onrender.com/calendar/store";
+
                 document.getElementById('eventForm').reset();
                 $('#description').summernote('code', '');
                 document.getElementById('eventId').value = '';
@@ -615,8 +615,8 @@
 
                 if (confirm('Are you sure you want to delete this event?')) {
                     const deleteForm = document.getElementById('deleteForm');
-                    // deleteForm.action = `https://calendev.onrender.com/calendar/delete/${id}`;
-                    deleteForm.action = `{{ route('calendar.delete', $id) }}`;
+                    deleteForm.action = `https://calendev.onrender.com/calendar/delete/${id}`;
+
 
                     deleteForm.submit();
                 }
