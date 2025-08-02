@@ -23,7 +23,7 @@ class CalendarController extends Controller
             'reminder_time' => 'required|integer|min:0'
         ]);
 
-        $validated['user_id'] = auth()->user()->id();
+        $validated['user_id'] = auth()->id();
 
         Event::create($validated);
 
@@ -42,9 +42,9 @@ class CalendarController extends Controller
             'reminder_time' => 'required|integer|min:0'
         ]);
 
-        $validated['user_id'] = auth()->user()->id();
+        $validated['user_id'] = auth()->id();
 
-        Event::findOrFail(auth()->user()->id)->update($validated);
+        Event::findOrFail($request->id)->update($validated);
 
         return redirect()->route('calendar')->with('success', 'Event Updated Successfully');
     }
