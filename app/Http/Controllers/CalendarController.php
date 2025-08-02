@@ -24,6 +24,7 @@ class CalendarController extends Controller
         ]);
 
         $validated['user_id'] = auth()->id();
+        dd($validated);
 
         Event::create($validated);
 
