@@ -15,7 +15,6 @@ class CalendarController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
             'title' => 'required|string',
             'description' => 'nullable|string',
             'start_date' => 'required|date',
@@ -24,7 +23,6 @@ class CalendarController extends Controller
         ]);
 
         $validated['user_id'] = auth()->id();
-        dd($validated);
 
         Event::create($validated);
 
@@ -34,7 +32,6 @@ class CalendarController extends Controller
     public function update(Request $request)
     {
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
             'id' => 'required|exists:events,id',
             'title' => 'required|string',
             'description' => 'nullable|string',

@@ -9,7 +9,7 @@ class Event extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['title','description' , 'start_date', 'end_date', 'reminder_time'];
+    protected $fillable = ['title','description' , 'start_date', 'end_date', 'reminder_time', 'user_id'];
 
     public function user() {
         return $this->belongsTo(User::class, 'user_id');
