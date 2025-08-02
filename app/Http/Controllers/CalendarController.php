@@ -8,19 +8,22 @@ class CalendarController extends Controller
 {
     public function index()
     {
-        $events = Event::all();
+        $events = Event::where('user_id', auth()->id())->get();
         return view('calendar.index', compact('events'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'user_id' => 'required|exists:users,id',
             'title' => 'required|string',
             'description' => 'nullable|string',
             'start_date' => 'required|date',
             'end_date' => 'nullable|date',
             'reminder_time' => 'required|integer|min:0'
         ]);
+
+        $validated['user_id'] = auth()->user()->id();
 
         Event::create($validated);
 
@@ -30,6 +33,7 @@ class CalendarController extends Controller
     public function update(Request $request)
     {
         $validated = $request->validate([
+            'user_id' => 'required|exists:users,id',
             'id' => 'required|exists:events,id',
             'title' => 'required|string',
             'description' => 'nullable|string',
@@ -38,7 +42,9 @@ class CalendarController extends Controller
             'reminder_time' => 'required|integer|min:0'
         ]);
 
-        Event::findOrFail($request->id)->update($validated);
+        $validated['user_id'] = auth()->user()->id();
+
+        Event::findOrFail(auth()->user()->id)->update($validated);
 
         return redirect()->route('calendar')->with('success', 'Event Updated Successfully');
     }
