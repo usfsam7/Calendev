@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
-
+use App\Jobs\SendWelcomeEmail;
 class RegisteredUserController extends Controller
 {
     /**
@@ -44,7 +44,8 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
-
+        SendWelcomeEmail::dispatch($user)->delay(now()->addSeconds(5));
         return redirect(route('calendar', absolute: false));
+
     }
 }

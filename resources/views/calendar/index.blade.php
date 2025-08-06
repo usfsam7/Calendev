@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 @auth
+
     <head>
         <meta charset="UTF-8">
         <link rel="icon" href="{{ asset('images/icon.jpg') }}" type="image/jpg">
@@ -261,8 +262,6 @@
             .note-btn.dropdown-toggle::after {
                 display: none !important;
             }
-
-
         </style>
 
     </head>
@@ -302,8 +301,8 @@
                     </svg>
                 </button>
 
-                <a href="https://calendev.onrender.com/edit-profile"><svg xmlns="http://www.w3.org/2000/svg" width="27" height="27"
-                        fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+                <a href="https://calendev.onrender.com/edit-profile"><svg xmlns="http://www.w3.org/2000/svg" width="27"
+                        height="27" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                         <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
                         <path fill-rule="evenodd"
                             d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
@@ -338,61 +337,63 @@
                 <div class="modal-content">
                     <form id="eventForm" method="POST" action="https://calendev.onrender.com/calendar/store">
 
-                    @csrf
-                    <input type="hidden" name="id" id="eventId">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="eventModalLabel">Add A New Event</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-
-                    <div class="modal-body">
-
-
-                        <div class="mb-3">
-                            <label for="title" class="form-label">Title</label>
-                            <input type="text" name="title" id="title" placeholder="Title" class="form-control" required>
+                        @csrf
+                        <input type="hidden" name="id" id="eventId">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="eventModalLabel">Add A New Event</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Description</label>
-                            <textarea type="text" name="description" id="description" placeholder="Description"
-                                class="form-control"></textarea>
+                        <div class="modal-body">
+
+
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Title</label>
+                                <input type="text" name="title" id="title" placeholder="Title" class="form-control"
+                                    required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea type="text" name="description" id="description" placeholder="Description"
+                                    class="form-control"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="reminder_time">Remind Me Before:</label>
+
+                                <!-- Dropdown with suggested times -->
+                                <select id="reminder_time" name="reminder_time" class="form-control">
+                                    <option value="5">5 Minutes</option>
+                                    <option value="10">10 Minutes</option>
+                                    <option value="20">20 Minutes</option>
+                                    <option value="30">30 Minutes</option>
+                                    <option value="60">1 Hour</option>
+                                    <option value="120">2 Hours</option>
+                                    <option value="1440">1 Day</option>
+                                    <option value="0">No Reminder</option>
+                                </select>
+                            </div>
+
+
+                            <div class="mb-3">
+                                <label for="start_date" class="form-label">Start Date</label>
+                                <input type="datetime-local" name="start_date" id="start_date" class="form-control"
+                                    required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="end_date" class="form-label">End Date</label>
+                                <input type="datetime-local" name="end_date" id="end_date" class="form-control" required>
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="reminder_time">Remind Me Before:</label>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Save</button>
 
-                            <!-- Dropdown with suggested times -->
-                            <select id="reminder_time" name="reminder_time" class="form-control">
-                                <option value="5">5 Minutes</option>
-                                <option value="10">10 Minutes</option>
-                                <option value="20">20 Minutes</option>
-                                <option value="30">30 Minutes</option>
-                                <option value="60">1 Hour</option>
-                                <option value="120">2 Hours</option>
-                                <option value="1440">1 Day</option>
-                                <option value="0">No Reminder</option>
-                            </select>
+                            <button type="button" class="btn btn-danger" onclick="submitDelete()">Delete</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         </div>
-
-
-                        <div class="mb-3">
-                            <label for="start_date" class="form-label">Start Date</label>
-                            <input type="datetime-local" name="start_date" id="start_date" class="form-control" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="end_date" class="form-label">End Date</label>
-                            <input type="datetime-local" name="end_date" id="end_date" class="form-control" required>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Save</button>
-
-                        <button type="button" class="btn btn-danger" onclick="submitDelete()">Delete</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
                     </form>
                 </div>
             </div>
@@ -411,16 +412,16 @@
         <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 
         @php
-    $formattedEvents = $events->map(function ($event) {
-        return [
-            'id' => (string) $event->id,
-            'title' => $event->title,
-            'description' => $event->description,
-            'start' => $event->start_date,
-            'end' => $event->end_date,
-            'reminder_time' => $event->reminder_time,
-        ];
-    });
+            $formattedEvents = $events->map(function ($event) {
+                return [
+                    'id' => (string) $event->id,
+                    'title' => $event->title,
+                    'description' => $event->description,
+                    'start' => $event->start_date,
+                    'end' => $event->end_date,
+                    'reminder_time' => $event->reminder_time,
+                ];
+            });
         @endphp
 
         <script>
@@ -480,6 +481,14 @@
                                     });
                                 }
                             }, Math.max(0, timeUntilEvent - reminderMs));
+                        }
+
+                        const eventEnd = info.event.end;
+                        const now = new Date();
+
+                        if (eventEnd && eventEnd < now) {
+                            info.el.style.textDecoration = 'line-through';
+                            info.el.classList.add('event-ended');
                         }
                     },
                     eventDrop: function (info) {
@@ -724,5 +733,6 @@
             </div>
         </footer>
     </body>
+
     </html>
 @endauth
